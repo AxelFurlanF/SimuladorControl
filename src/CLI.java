@@ -48,11 +48,10 @@ public class CLI {
 	
 		    switch (choice) {
 		        case 1:
-		    		HttpResponse<JsonNode> jsonResponse = Unirest.post("http://localhost:9000/api/validateUser")
+		    		HttpResponse<JsonNode> jsonResponse = Unirest.get("http://localhost:9000/api/transformadores")
 															  .header("accept", "application/json")
-															  .field("username", user)
-															  .field("password", pwd)
 															  .asJson();
+		    		System.out.println(jsonResponse.getBody().toString());
 		            break;
 		        case 2:
 		            // Perform "encrypt number" case.
