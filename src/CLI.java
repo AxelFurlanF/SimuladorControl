@@ -4,6 +4,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.GetRequest;
+import com.mashape.unirest.request.HttpRequestWithBody;
 
 
 public class CLI {
@@ -11,7 +13,7 @@ public class CLI {
 	public static void main(String[] args) throws UnirestException {
 		Scanner scanner = new Scanner(System.in);
 		
-		String menu = "1.- Estado de cada dispositivo \n" +
+		String menu = "1.- Listado de dispositivo \n" +
 					"2.- Apagar dispositivo \n"+
 					"3.- Encender dispositivo \n"+
 					"4.- Poner en modo ahorro a dispositivo \n"+
@@ -36,8 +38,8 @@ public class CLI {
 		
 		*/
 		
+		int id_user = 2;
 		
-		System.out.println("Bienvenido, ingrese su username y password");
 		
 		
 		Boolean in = true;
@@ -45,23 +47,31 @@ public class CLI {
 			System.out.println(menu);
 		    
 		    int choice = scanner.nextInt();
+		    scanner.nextLine();
 	
 		    switch (choice) {
 		        case 1:
-		    		HttpResponse<JsonNode> jsonResponse = Unirest.get("http://localhost:9000/api/transformadores")
-															  .header("accept", "application/json")
-															  .asJson();
-		    		System.out.println(jsonResponse.getBody().toString());
+		    		GetRequest jsonResponse = Unirest.get("http://localhost:9000/api/dispositivos/"+id_user);
+		    		System.out.println(jsonResponse.asString().getBody());
 		            break;
 		        case 2:
-		            // Perform "encrypt number" case.
+		    		System.out.println("Que dispositivo desea apagar? ID:");
+		    		String id_dispo = scanner.nextLine();
+		    		GetRequest statusResponse = Unirest.get("http://localhost:9000/api/apagar_dispositivo/" + id_user + "/" +id_dispo);
+		    		System.out.println(statusResponse.asString().getBody());
 		        	break;
 		        case 3:
-		            // Perform "decrypt number" case.
-		            break;
+		        	System.out.println("Que dispositivo desea encender? ID:");
+		    		String id_dispo_e = scanner.nextLine();
+		    		GetRequest statusResponse_e = Unirest.get("http://localhost:9000/api/encender_dispositivo/" + id_user + "/" +id_dispo_e);
+		    		System.out.println(statusResponse_e.asString().getBody());
+		        	break;
 		        case 4:
-		            // Perform "quit" case.
-		            break;
+		        	System.out.println("Que dispositivo desea poner en modo de ahorro? ID:");
+		    		String id_dispo_a = scanner.nextLine();
+		    		GetRequest statusResponse_a = Unirest.get("http://localhost:9000/api/ahorro_dispositivo/" + id_user + "/" +id_dispo_a);
+		    		System.out.println(statusResponse_a.asString().getBody());
+		        	break;
 		        case 5:
 		            // Perform "quit" case.
 		            break;
@@ -69,7 +79,8 @@ public class CLI {
 		        	in=false;
 		            break;
 		    }
-
+		    
+		    System.out.println("\n \n \n");
 		}
 	}
 
