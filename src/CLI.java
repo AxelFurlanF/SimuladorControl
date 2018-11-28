@@ -1,11 +1,8 @@
 import java.util.Scanner;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.GetRequest;
-import com.mashape.unirest.request.HttpRequestWithBody;
 
 
 public class CLI {
@@ -17,7 +14,7 @@ public class CLI {
 					"2.- Apagar dispositivo \n"+
 					"3.- Encender dispositivo \n"+
 					"4.- Poner en modo ahorro a dispositivo \n"+
-					"5.- Total KWh de dispositivos estándar \n"+
+					"5.- Consumo último mes \n"+
 					"6.- Salir";
 		
 		System.out.println("CLI SGE");
@@ -73,8 +70,9 @@ public class CLI {
 		    		System.out.println(statusResponse_a.asString().getBody());
 		        	break;
 		        case 5:
-		            // Perform "quit" case.
-		            break;
+		        	System.out.println("Que dispositivo desea poner en modo de ahorro? ID:");
+		    		GetRequest statusResponse_c = Unirest.get("http://localhost:9000/api/consumo_ultimo_mes/" + id_user);
+		    		System.out.println(statusResponse_c.asString().getBody());
 		        default:
 		        	in=false;
 		            break;
